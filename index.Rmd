@@ -6,37 +6,9 @@ library(ggplot2)
 library(dplyr)
 US_trend_states_BR <- read.csv("NCHS_-_U.S._and_State_Trends_on_Teen_Births.csv")
 
-```{r}
-colnames(US_trend_states_BR)
-
-US_trend_states_BR <- US_trend_states_BR %>%
-  mutate(
-    StateBirths = as.numeric(as.character(`State.Births`)),
-    USBirths = as.numeric(as.character(`U.S..Births`))
-  )
-
-US_trend_states_BR <- US_trend_states_BR %>%
-  rename(
-    StateRate = `StateRate`  
-  )
-
-aggregated_data <- US_trend_states_BR %>%
-  group_by(State, Year) %>%
-  summarise(
-    AverageStateRate = round(mean(StateRate, na.rm = TRUE), 2),
-    TotalStateBirths = sum(StateBirths, na.rm = TRUE),
-    .groups = 'drop'
-  ) %>%
-  arrange(State, desc(Year)) 
-
-knitr::kable(aggregated_data, caption = "Aggregated Teen Births Data by State and Year")
-```
-
 if (!requireNamespace("shinydashboard", quietly = TRUE)) {
   install.packages("shinydashboard")
 }
-
-
 
 ui <- dashboardPage(
   dashboardHeader(title = "Teen Pregnancy Analysis"),
@@ -113,18 +85,25 @@ ui <- dashboardPage(
                 plotOutput("pregnancyTrendsPlot"),
                 h3("Summary for the graph"),
                 p("-  We believe this line plot would be an ideal for visualizing the trends in teen birth rates by state over time, due to its ability to clearly show changes through connected data points for each state. By incorporating different colors for each state, the plot facilitates easy comparisons, allowing observers to quickly discern which states have higher or lower rates and how these rates evolve relative to each other. This visualization is particularly valuable for identifying trends, fluctuations, and the impacts of different state policies or healthcare access on teen birth rates.")
-                # Add more elements as needed
               )
       ),
       tabItem(tabName = "conclusions",
               fluidPage(
-                h1("Conclusions"),
-                p("Based on our analysis of teenage pregnancy, we identified key determinants that influence teenage pregnancy rates among teenagers. In order to mitigate this social issue, we propose several solutions to lower teenage pregnancy rate."),
-                h2("Possible effective solutions include:"),
-                p("1 . Provide in-depth and proper sexual education in the schools which includes how to use contraception to prevent pregnancy, how and when to use contraception to prevent sexually transmitted diseases, the significance of sexual consent, etc. Students should learn from the lessons in a way that when they start having sexual relationships they should take responsible and wise sexual decisions. In other words, proper sex education can help teenagers to take safer and responsible sexual decisions."),
-                p("2. Improve access to information on contraception. Provide free or reasonably priced contraceptive means – including information – from schools, community clinics, and online forums. Access counseling: making counseling services by professionals available to support young people when they need someone to talk to."),
-                p("3. Innovate discourses in family bases, not just in School but between parents and children to increase the boldness of their sex education and communication.By establishing an information-based group that allows all the members of the community to be involved in activities and workshops that work as a prevention of teenage pregnancy."),
-                p("4. Create and implement policies that support the health and rights of adolescents: ensure quality and coverage for sex education programs in all schools; in legislation, ensure that legally competent adolescents’ privacy rights are protected when accessing contraception and counseling services.")
+                h1("Conclusions & Takeaways"),
+                h3("Takeaway 1:"),
+                p("Through the analysis of the data, we calculated the Average US teen pregnancy rate. The data show that teen pregnancy rates have generally declined over the past few decades. For example, from 2000 to 2020, the teen pregnancy rate declined each year, from 62 percent in 1990-1991 to 18.1 percent in 2019-2020. This trend indicates that various education and interventions implemented in the past have had some success in reducing the teenage pregnancy rate. Widespread sex education and access to contraception are among the main factors behind these successes."),
+                p("Despite the overall positive trend, there are significant differences in teen pregnancy rates between states. The 2019-2020 teen pregnancy rate was 14.1 in California and 12.7 in New York, but 26.3 in Mississippi and 24.8 in Alabama. California and New York have significantly lower teen pregnancy rates than some southern states such as Mississippi and Alabama. This disparity reflects differences in sex education policies across states, access to contraception, and cultural and socioeconomic factors. Comparing policies and outcomes in different states can provide a reference for policy improvements across the country."),
+                h3("Takeaway 2(Main):"),
+                p("Further analysis showed that teen pregnancy rates are not determined by a single factor but by many social factors. For example, states with higher rates of teen pregnancy tend to have higher rates of poverty and lower levels of education. These findings suggest that in addition to direct sex education and contraception, improving overall socioeconomic status is an important way to reduce teen pregnancy rates.
+Our most important insight from this analysis is that comprehensive sex education and widespread access to contraception play a key role in reducing teen pregnancy rates. However, these measures alone are not enough, and socio-economic factors such as poverty and education levels also need to be taken into account and addressed. This insight highlights the need for policymakers to take a multi-layered, multi-dimensional approach when designing interventions. We suggest ways to further reduce the teen pregnancy rate."),
+                h4("Solutions we could think of:"),
+                p("1. Implement comprehensive and accurate sex education curricula in schools, including contraception, prevention and control of sexually transmitted diseases, sexual consent, etc. Educate adolescents on how to make informed sexual decisions, including rejecting unsafe sex and recognizing potential risks. Comprehensive sex education can help adolescents make safer and more responsible sexual decisions."),
+                p("2. Increase the availability of contraceptive knowledge and resources. Provide free or low-cost contraceptive tools and information through schools, community health centers, and online platforms. Accessible counseling: Professional sexual health counseling services are available so that young people can find support if they need help or advice."),
+                p("3. Encourage parents to have an open and honest dialogue with their children and improve parents' knowledge and communication skills about sex education. In addition, building community support networks to increase awareness and prevention of teenage pregnancy through events and workshops."),
+                p("4. Develop and implement policies that support the health and rights of adolescents, such as ensuring the quality and coverage of sex education curricula in schools and ensuring the teenagers have adequate funding to use contraceptives. There is a legal need to ensure the protection of adolescents' right to privacy when accessing contraceptive and counseling services."),
+                h3("Takeaway 3(Broad Influence)"),
+                p("The broad implications of our analysis are that it applies not only to reducing teen pregnancy rates, but also to other public health issues. By integrating educational, economic and health considerations, more effective public health policies can be designed. Such multidimensional strategies can achieve health improvements across a wider population, thereby enhancing overall social well-being."),
+                p("With these specific analyses and insights, we can provide strong support and recommendations for future policy development and interventions to help further reduce teen pregnancy rates and improve adolescent health in the United States.")
               )
       )
     )
